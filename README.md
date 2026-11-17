@@ -1,68 +1,85 @@
-# Mini ML Projekt
+# Mini ML Projekt: Healthcare predictions explained
 
-A small Python project for learning regression: train a model, compare it with a simple baseline, and inspect its mistakes.
+A small Python project investigating whether a model can estimate a diabetes-progression target more accurately than a simple average. The results are presented in a visual, plain-language HTML report.
 
-## What it does
+This project develops healthcare data analysis skills. EnergyAtlas remains a separate energy project.
 
-The exercise uses scikit-learn's bundled diabetes dataset. Ten numerical features are used to predict a quantitative measure of disease progression one year after baseline. This is an educational example, not a medical decision tool or an energy forecasting model.
+## Question and data
 
-- Splits data into 80% training and 20% test data with a fixed random seed.
-- Compares a training-mean baseline with Ridge regression.
-- Fits feature scaling only on training data using a pipeline.
-- Saves evaluation metrics, prediction errors, and a plot.
+Using ten numerical inputs from scikit-learn's bundled diabetes dataset, predict a quantitative measure of disease progression one year after baseline.
+
+This is regression: predicting a number. It is not diabetes diagnosis, cancer detection, or a probability of developing disease. The project is an educational analysis and has not been clinically validated.
+
+Dataset reference: https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html
 
 ## Run on Windows
 
-Python 3.12 is the intended starting environment. No GPU or API key is needed.
-
-From the project folder in PowerShell:
+In PowerShell, from the project folder:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe train.py
+Start-Process .\outputs\report.html
 ```
 
-If the virtual environment already exists, skip its creation.
+Skip environment creation if .venv already exists. Python 3.12 is the intended starting environment. No GPU, API key, or separate dataset download is required.
 
-## Initial verification
+## Visual results
+
+The self-contained report opens locally in a browser and includes:
+
+- Record counts for training and testing.
+- A bar chart comparing average prediction errors.
+- Recorded outcomes and predictions for twelve test examples.
+- Plain-language explanations of the method and limitations.
+
+The report contains embedded chart images and requires no external scripts or chart services.
+
+## Method
+
+1. Hold out 20% of records before training, using random_state=42.
+2. Train a baseline that predicts the training target average.
+3. Train Ridge regression with alpha=10 and feature scaling inside a pipeline.
+4. Compare both approaches on the same held-out records.
+5. Save scores, prediction errors, plots, and the visual report.
+
+The scaler is fitted only on training data. The test split is for evaluation, not repeated model selection.
+
+## Verified example results
 
 A run with scikit-learn 1.8.0 produced:
 
-| Model | Mean absolute error (lower is better) | R² (higher is better) |
+| Approach | Mean absolute error | R² |
 |---|---:|---:|
-| Training-mean baseline | 64.01 | -0.012 |
+| Training-average baseline | 64.01 | -0.012 |
 | Ridge regression | 42.86 | 0.457 |
 
-MAE is measured in the dataset's target units, not a percentage. These results describe one fixed test split; they do not establish performance on other populations. The test data should not be repeatedly used to choose model settings.
+The model had approximately 33% lower average absolute error than the baseline on this split. This is not 33% diagnostic accuracy. Errors are in the dataset's target-score units.
 
-## Generated outputs
+One split does not establish performance in another population or clinical usefulness. Large individual errors can remain despite better average performance. These data do not establish causes of disease progression.
 
-After running the script, open the local `outputs` folder:
-
-- `metrics.json`: evaluation scores.
-- `prediction_errors.csv`: predictions sorted by largest absolute error.
-- `predictions.png`: actual versus predicted values; points near the diagonal are more accurate.
-
-Generated outputs and the virtual environment are excluded from Git.
-
-## Project files
+## Files
 
 | File | Purpose |
 |---|---|
-| train.py | Load data, train models, evaluate, and save outputs |
-| requirements.txt | Required Python packages |
-| learning-notes.md | Concepts and questions for the first exercise |
-| .gitignore | Keep local environments and generated files out of commits |
+| train.py | Train and evaluate the baseline and model |
+| report.py | Build charts and the HTML results page |
+| requirements.txt | Package requirements |
+| learning-notes.md | First-exercise concepts and questions |
+| .gitignore | Exclude environments and generated outputs |
 
-## Next steps
+Generated files in outputs/ include report.html, comparison.png, examples.png, predictions.png, metrics.json, and prediction_errors.csv.
 
-Run locally and explain the largest prediction errors. Then practise cross-validation on training data, compare a second model, and apply the process to a suitable public energy dataset. Agent development will be a separate step using existing language models and tools.
+## Next learning steps
 
-Starter implementation and documentation were prepared with AI assistance. Running the example is the beginning of the learning exercise.
+- Run the project locally and inspect the charts.
+- Record personal observations in learning-notes.md.
+- Use cross-validation within training data to investigate stability.
+- Inspect errors across target ranges.
+- Compare a second model using training-only validation.
+- Document conclusions without presenting the model as a clinical tool.
 
-## Dataset reference
+Starter code and documentation were prepared with AI assistance. Local execution and the learner's own interpretation are separate milestones.
 
-[scikit-learn diabetes dataset documentation](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)
-
-No repository licence has been selected yet.
+No repository licence has been selected.
