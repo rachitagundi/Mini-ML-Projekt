@@ -1,6 +1,7 @@
 """A small regression exercise. Run with: python train.py"""
 from pathlib import Path
 import json
+from report import write_report
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
@@ -50,7 +51,10 @@ def main():
     fig.tight_layout()
     fig.savefig(output / "predictions.png", dpi=150)
     plt.close(fig)
+    write_report(output, metrics, errors, len(X_train), len(X_test))
+    print(f"Open {output / 'report.html'} in your browser")
     print(f"Saved results to {output}")
 
 if __name__ == "__main__":
     main()
+
