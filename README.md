@@ -80,6 +80,4 @@ Generated files in outputs/ include report.html, comparison.png, examples.png, p
 - Compare a second model using training-only validation.
 - Document conclusions without presenting the model as a clinical tool.
 
-Starter code and documentation were prepared with AI assistance. Local execution and the learner's own interpretation are separate milestones.
-
 No repository licence has been selected.
